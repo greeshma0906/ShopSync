@@ -80,7 +80,7 @@ export default function EventRecommendations({ recommendations }: EventRecommend
             {recommendation.products.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {recommendation.products.map((product) => (
-                  <ProductCard key={product.id} product={product} compact />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
