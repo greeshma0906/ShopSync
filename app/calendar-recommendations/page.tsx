@@ -1,18 +1,25 @@
-"use client"
+"use client";
 
-import { useSession } from "next-auth/react"
-import { useCalendar } from "@/hooks/use-calendar"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import CalendarConnect from "@/components/calendar-connect"
-import EventRecommendations from "@/components/event-recommendations"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Sparkles, Calendar, TrendingUp, RefreshCw } from "lucide-react"
+import { useSession } from "next-auth/react";
+import { useCalendar } from "@/hooks/use-calendar";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import CalendarConnect from "@/components/calendar-connect";
+import EventRecommendations from "@/components/event-recommendations";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Sparkles, Calendar, TrendingUp, RefreshCw } from "lucide-react";
 
 export default function CalendarRecommendationsPage() {
-  const { data: session } = useSession()
-  const { recommendations, loading, error, refetch, isAuthenticated } = useCalendar()
+  const { data: session } = useSession();
+  const { recommendations, loading, error, refetch, isAuthenticated } =
+    useCalendar();
 
   return (
     <div className="min-h-screen">
@@ -21,11 +28,14 @@ export default function CalendarRecommendationsPage() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <Sparkles className="w-8 h-8 mr-3 text-primary" />
-            <h1 className="text-3xl font-bold text-balance">Smart Fashion Recommendations</h1>
+            <h1 className="text-3xl font-bold text-balance">
+              Smart Fashion Recommendations
+            </h1>
           </div>
           <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
-            Get personalized clothing suggestions based on your upcoming calendar events. Perfect outfits for every
-            occasion, automatically curated for you.
+            Get personalized clothing suggestions based on your upcoming
+            calendar events. Perfect outfits for every occasion, automatically
+            curated for you.
           </p>
         </div>
 
@@ -41,7 +51,8 @@ export default function CalendarRecommendationsPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  We analyze your calendar events to understand the occasion and suggest appropriate clothing styles.
+                  We analyze your calendar events to understand the occasion and
+                  suggest appropriate clothing styles.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -53,7 +64,8 @@ export default function CalendarRecommendationsPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Our AI matches your events with the perfect outfits from our curated collection of fashion items.
+                  Our AI matches your events with the perfect outfits from our
+                  curated collection of fashion items.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -65,8 +77,8 @@ export default function CalendarRecommendationsPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription>
-                  Get recommendations tailored to your personal style preferences and the specific requirements of each
-                  event.
+                  Get recommendations tailored to your personal style
+                  preferences and the specific requirements of each event.
                 </CardDescription>
               </CardContent>
             </Card>
@@ -77,11 +89,17 @@ export default function CalendarRecommendationsPage() {
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-2xl font-semibold">Your Personalized Recommendations</h2>
-                  <p className="text-muted-foreground">Based on your upcoming calendar events</p>
+                  <h2 className="text-2xl font-semibold">
+                    Your Personalized Recommendations
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Based on your upcoming calendar events
+                  </p>
                 </div>
                 <Button onClick={refetch} disabled={loading} variant="outline">
-                  <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
+                  <RefreshCw
+                    className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
+                  />
                   Refresh
                 </Button>
               </div>
@@ -90,7 +108,11 @@ export default function CalendarRecommendationsPage() {
                 <Card className="mb-6 border-destructive">
                   <CardContent className="pt-6">
                     <p className="text-destructive">Error: {error}</p>
-                    <Button onClick={refetch} className="mt-4 bg-transparent" variant="outline">
+                    <Button
+                      onClick={refetch}
+                      className="mt-4 bg-transparent"
+                      variant="outline"
+                    >
                       Try Again
                     </Button>
                   </CardContent>
@@ -125,10 +147,12 @@ export default function CalendarRecommendationsPage() {
                 <Card>
                   <CardContent className="text-center py-12">
                     <Calendar className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-xl font-semibold mb-2">No Upcoming Events</h3>
+                    <h3 className="text-xl font-semibold mb-2">
+                      No Upcoming Events
+                    </h3>
                     <p className="text-muted-foreground mb-4">
-                      We couldn't find any upcoming events in your calendar. Add some events to get personalized
-                      recommendations!
+                      We couldn't find any upcoming events in your calendar. Add
+                      some events to get personalized recommendations!
                     </p>
                     <Button onClick={refetch} variant="outline">
                       <RefreshCw className="w-4 h-4 mr-2" />
@@ -143,5 +167,5 @@ export default function CalendarRecommendationsPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

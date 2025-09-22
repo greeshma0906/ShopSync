@@ -1,24 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams } from "next/navigation"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Heart, Star, Truck, RotateCcw, Shield } from "lucide-react"
-import { getProductById } from "@/lib/products"
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Heart, Star, Truck, RotateCcw, Shield } from "lucide-react";
+import { getProductById } from "@/lib/products";
+import { useCart } from "@/lib/cart-context";
 
 export default function ProductPage() {
-  const params = useParams()
-  const productId = Number.parseInt(params.id as string)
-  const product = getProductById(productId)
+  const params = useParams();
+  const productId = Number.parseInt(params.id as string);
+  const product = getProductById(productId);
+  const { dispatch } = useCart();
 
-  const [selectedSize, setSelectedSize] = useState("")
-  const [selectedColor, setSelectedColor] = useState("")
-  const [selectedImage, setSelectedImage] = useState(0)
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedImage, setSelectedImage] = useState(0);
 
   if (!product) {
     return (
@@ -27,12 +29,14 @@ export default function ProductPage() {
         <main className="container mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
-            <p className="text-muted-foreground">The product you're looking for doesn't exist.</p>
+            <p className="text-muted-foreground">
+              The product you're looking for doesn't exist.
+            </p>
           </div>
         </main>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -72,18 +76,26 @@ export default function ProductPage() {
           <div className="space-y-6">
             <div>
               <p className="text-muted-foreground mb-2">{product.brand}</p>
-              <h1 className="text-3xl font-bold mb-4 text-balance">{product.name}</h1>
+              <h1 className="text-3xl font-bold mb-4 text-balance">
+                {product.name}
+              </h1>
               <div className="flex items-center mb-4">
                 <div className="flex items-center">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="ml-1 font-medium">{product.rating}</span>
                 </div>
-                <span className="text-muted-foreground ml-2">({product.reviews} reviews)</span>
+                <span className="text-muted-foreground ml-2">
+                  ({product.reviews} reviews)
+                </span>
               </div>
               <div className="flex items-center space-x-4 mb-6">
                 <span className="text-3xl font-bold">₹{product.price}</span>
-                <span className="text-xl text-muted-foreground line-through">₹{product.originalPrice}</span>
-                <Badge className="bg-accent text-accent-foreground">{product.discount}% OFF</Badge>
+                <span className="text-xl text-muted-foreground line-through">
+                  ₹{product.originalPrice}
+                </span>
+                <Badge className="bg-accent text-accent-foreground">
+                  {product.discount}% OFF
+                </Badge>
               </div>
             </div>
 
@@ -126,10 +138,33 @@ export default function ProductPage() {
             )}
 
             {/* Action Buttons */}
+            {/* Action Buttons */}
             <div className="flex space-x-4">
-              <Button size="lg" className="flex-1">
+              <Button
+                size="lg"
+                className="flex-1"
+                onClick={() => {
+                  if (!selectedSize || !selectedColor) {
+                    alert("Please select size and color");
+                    return;
+                  }
+
+                  dispatch({
+                    type: "ADD_ITEM",
+                    payload: {
+                      id: String(product.id),
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                      size: selectedSize,
+                      color: selectedColor,
+                    },
+                  });
+                }}
+              >
                 Add to Bag
               </Button>
+
               <Button variant="outline" size="lg">
                 <Heart className="h-4 w-4" />
               </Button>
@@ -155,17 +190,23 @@ export default function ProductPage() {
               <div className="text-center">
                 <Truck className="h-8 w-8 mx-auto mb-2 text-primary" />
                 <p className="text-sm font-medium">Free Delivery</p>
-                <p className="text-xs text-muted-foreground">On orders above ₹999</p>
+                <p className="text-xs text-muted-foreground">
+                  On orders above ₹999
+                </p>
               </div>
               <div className="text-center">
                 <RotateCcw className="h-8 w-8 mx-auto mb-2 text-primary" />
                 <p className="text-sm font-medium">Easy Returns</p>
-                <p className="text-xs text-muted-foreground">30 days return policy</p>
+                <p className="text-xs text-muted-foreground">
+                  30 days return policy
+                </p>
               </div>
               <div className="text-center">
                 <Shield className="h-8 w-8 mx-auto mb-2 text-primary" />
                 <p className="text-sm font-medium">Secure Payment</p>
-                <p className="text-xs text-muted-foreground">100% secure payments</p>
+                <p className="text-xs text-muted-foreground">
+                  100% secure payments
+                </p>
               </div>
             </div>
 
@@ -174,12 +215,14 @@ export default function ProductPage() {
             {/* Description */}
             <div>
               <h3 className="font-semibold mb-3">Product Description</h3>
-              <p className="text-muted-foreground text-pretty">{product.description}</p>
+              <p className="text-muted-foreground text-pretty">
+                {product.description}
+              </p>
             </div>
           </div>
         </div>
       </main>
       <Footer />
     </div>
-  )
+  );
 }

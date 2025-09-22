@@ -1,14 +1,49 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import CartSidebar from "@/components/cart-sidebar"
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useSession, signIn, signOut } from "next-auth/react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import CartSidebar from "@/components/cart-sidebar";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
+
+  const renderAuthButton = () => {
+    if (session) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <span className="mr-2">👤</span>
+              {session.user?.name || "Profile"}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => signOut()}>
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    } else {
+      return (
+        <Button variant="ghost" size="sm" onClick={() => signIn("google")}>
+          <span className="mr-2">👤</span>
+          Sign In
+        </Button>
+      );
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -16,7 +51,7 @@ export default function Header() {
         {/* Top bar */}
         <div className="flex items-center justify-between py-3">
           <Link href="/" className="text-2xl font-bold text-primary">
-            StyleSync
+            Aurea
           </Link>
 
           {/* Search bar - hidden on mobile */}
@@ -25,22 +60,27 @@ export default function Header() {
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm">
                 🔍
               </span>
-              <Input placeholder="Search for products, brands and more" className="pl-10 pr-4" />
+              <Input
+                placeholder="Search for products, brands and more"
+                className="pl-10 pr-4"
+              />
             </div>
           </div>
 
           {/* Right side icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="hidden md:flex">
-              <span className="mr-2">👤</span>
-              Profile
-            </Button>
+            <div className="hidden md:flex">{renderAuthButton()}</div>
             <Button variant="ghost" size="sm" className="hidden md:flex">
               <span className="mr-2">❤️</span>
               Wishlist
             </Button>
             <CartSidebar />
-            <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
               {isMenuOpen ? <span>✕</span> : <span>☰</span>}
             </Button>
           </div>
@@ -50,21 +90,23 @@ export default function Header() {
         <nav className="hidden md:flex items-center space-x-8 py-2 border-t border-border">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="font-medium">
-                MEN
-              </Button>
+              <Link href="/men">
+                <Button variant="ghost" className="font-medium">
+                  MEN
+                </Button>
+              </Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/men/topwear">Topwear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/men/bottomwear">Bottomwear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/men/footwear">Footwear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/men/accessories">Accessories</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -72,21 +114,23 @@ export default function Header() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="font-medium">
-                WOMEN
-              </Button>
+              <Link href="/women">
+                <Button variant="ghost" className="font-medium">
+                  WOMEN
+                </Button>
+              </Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/women/western-wear">Western Wear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/women/ethnic-wear">Ethnic Wear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/women/footwear">Footwear</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/women/accessories">Accessories</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -94,18 +138,20 @@ export default function Header() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="font-medium">
-                KIDS
-              </Button>
+              <Link href="/kids">
+                <Button variant="ghost" className="font-medium">
+                  KIDS
+                </Button>
+              </Link>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/kids/boys">Boys</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/kids/girls">Girls</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/kids/infants">Infants</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -132,13 +178,26 @@ export default function Header() {
               <Link href="/kids" className="font-medium">
                 KIDS
               </Link>
-              <Link href="/calendar-recommendations" className="font-medium text-accent">
+              <Link
+                href="/calendar-recommendations"
+                className="font-medium text-accent"
+              >
                 Smart Recommendations
               </Link>
               <div className="flex space-x-4 pt-4">
-                <Button variant="ghost" size="sm">
-                  Profile
-                </Button>
+                {session ? (
+                  <Button variant="ghost" size="sm" onClick={() => signOut()}>
+                    Sign Out
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => signIn("google")}
+                  >
+                    Sign In
+                  </Button>
+                )}
                 <Button variant="ghost" size="sm">
                   Wishlist
                 </Button>
@@ -148,5 +207,5 @@ export default function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }

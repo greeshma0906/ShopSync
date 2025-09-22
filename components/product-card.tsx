@@ -7,6 +7,7 @@ import type { Product } from "@/lib/products"
 
 interface ProductCardProps {
   product: Product
+  compact?: boolean 
 }
 
 export default function ProductCard({ product }: ProductCardProps) {

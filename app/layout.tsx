@@ -16,7 +16,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StyleSync - Fashion with Calendar Integration",
+  title: "Aurea - Fashion with Calendar Integration",
   description:
     "Discover the latest fashion trends with personalized recommendations based on your calendar events",
   generator: "v0.app",

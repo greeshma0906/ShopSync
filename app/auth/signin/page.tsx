@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { signIn } from "next-auth/react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, ShoppingBag } from "lucide-react"
+import { signIn } from "next-auth/react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Calendar, ShoppingBag } from "lucide-react";
 
 export default function SignInPage() {
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/calendar-recommendations" })
-  }
+    signIn("google", { callbackUrl: "/calendar-recommendations" });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -20,9 +26,10 @@ export default function SignInPage() {
               <Calendar className="h-8 w-8 text-secondary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">StyleSync</CardTitle>
+          <CardTitle className="text-2xl font-bold">Aurea</CardTitle>
           <CardDescription>
-            Connect your Google Calendar to get personalized fashion recommendations based on your upcoming events
+            Connect your Google Calendar to get personalized fashion
+            recommendations based on your upcoming events
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -48,10 +55,11 @@ export default function SignInPage() {
             Continue with Google
           </Button>
           <p className="text-xs text-muted-foreground mt-4 text-center">
-            We'll access your calendar to provide personalized fashion recommendations. Your data is secure and private.
+            We'll access your calendar to provide personalized fashion
+            recommendations. Your data is secure and private.
           </p>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
